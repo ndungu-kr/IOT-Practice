@@ -1,0 +1,145 @@
+[
+    {
+        "id": "242bfc3a2efb46e8",
+        "type": "tab",
+        "label": "Home Security System Flow",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "36122af6f219b37b",
+        "type": "serial in",
+        "z": "242bfc3a2efb46e8",
+        "name": "",
+        "serial": "12ad8ece7c714bac",
+        "x": 330,
+        "y": 220,
+        "wires": [
+            [
+                "a847459ef403547b"
+            ]
+        ]
+    },
+    {
+        "id": "a847459ef403547b",
+        "type": "json",
+        "z": "242bfc3a2efb46e8",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 530,
+        "y": 220,
+        "wires": [
+            [
+                "5dc33c29f287081c",
+                "3227583f0846c503"
+            ]
+        ]
+    },
+    {
+        "id": "5dc33c29f287081c",
+        "type": "function",
+        "z": "242bfc3a2efb46e8",
+        "name": "function 1",
+        "func": "// remembering the last state so we only send a command when it changes\nvar lastState = context.get('lastState') || 'OFF';\n\nif (msg.payload.Armed === 1) {\n\n    var soundThreshold = 200;\n    var distanceThreshold = 10;\n\n    // all three sensors must be triggered at the same time\n    if (msg.payload.Motion === 1 &&\n        msg.payload.Sound > soundThreshold &&\n        msg.payload.Distance < distanceThreshold) {\n\n            // only send alarm if we werent already in the alarm state\n            if (lastState!= 'ALARM'){\n                context.set('lastState', 'ALARM')\n                msg.payload = \"ALARM\\n\";\n                return msg;\n            }\n        } else {\n            // conditions no longer met, send off if we werent already off\n            if (lastState!= 'OFF'){\n                context.set('lastState', 'OFF')\n                msg.payload = \"OFF\\n\";\n                return msg;\n            }\n        }\n} else {\n    // system is disarmed, send off if we werent already off\n    if (lastState!= 'OFF'){\n        context.set('lastState', 'OFF')\n        msg.payload = \"OFF\\n\";\n        return msg;\n    }\n}\n\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 220,
+        "wires": [
+            [
+                "186b7aecdab93ee3",
+                "7559b5f256b52f34"
+            ]
+        ]
+    },
+    {
+        "id": "186b7aecdab93ee3",
+        "type": "serial out",
+        "z": "242bfc3a2efb46e8",
+        "name": "",
+        "serial": "b49d3541c6a1e0e2",
+        "x": 960,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "3227583f0846c503",
+        "type": "debug",
+        "z": "242bfc3a2efb46e8",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 740,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "7559b5f256b52f34",
+        "type": "debug",
+        "z": "242bfc3a2efb46e8",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "12ad8ece7c714bac",
+        "type": "serial-port",
+        "name": "",
+        "serialport": "/dev/rfcomm0",
+        "serialbaud": "9600",
+        "databits": 8,
+        "parity": "none",
+        "stopbits": 1,
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": 10000
+    },
+    {
+        "id": "b49d3541c6a1e0e2",
+        "type": "serial-port",
+        "name": "",
+        "serialport": "/dev/rfcomm0",
+        "serialbaud": "9600",
+        "databits": 8,
+        "parity": "none",
+        "stopbits": 1,
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": 10000
+    }
+]
