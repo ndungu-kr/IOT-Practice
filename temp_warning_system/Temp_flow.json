@@ -1,0 +1,61 @@
+[
+    {
+        "id": "99f1f52284a8d71d",
+        "type": "tab",
+        "label": "Temp Warning System Flow",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "92eaeeb1766699f6",
+        "type": "debug",
+        "z": "99f1f52284a8d71d",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "0e97923129f4eace",
+        "type": "serial in",
+        "z": "99f1f52284a8d71d",
+        "name": "",
+        "serial": "b49d3541c6a1e0e2",
+        "x": 650,
+        "y": 260,
+        "wires": [
+            [
+                "92eaeeb1766699f6"
+            ]
+        ]
+    },
+    {
+        "id": "b49d3541c6a1e0e2",
+        "type": "serial-port",
+        "name": "",
+        "serialport": "/dev/rfcomm0",
+        "serialbaud": "9600",
+        "databits": 8,
+        "parity": "none",
+        "stopbits": 1,
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": 10000
+    }
+]
